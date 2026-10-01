@@ -1,0 +1,32 @@
+name: warranty_vault
+description: "WarrantyVault - Never lose a receipt. Never miss a warranty."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
+  cloud_firestore: ^5.0.0
+  firebase_storage: ^12.0.0
+  firebase_messaging: ^15.0.0
+  google_sign_in: ^6.2.1
+  google_mlkit_text_recognition: ^0.13.0
+  image_picker: ^1.1.0
+  intl: ^0.19.0
+  hive_flutter: ^1.1.0
+  http: ^1.2.0
+  uuid: ^4.4.0
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true

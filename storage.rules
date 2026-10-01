@@ -1,0 +1,39 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidDocType() {
+      return request.resource.contentType.matches('image/jpeg') ||
+             request.resource.contentType.matches('image/png') ||
+             request.resource.contentType.matches('image/webp') ||
+             request.resource.contentType.matches('application/pdf');
+    }
+    
+    function isUnderMaxSize() {
+      // Max 25MB for invoices and scanned documents
+      return request.resource.size < 25 * 1024 * 1024;
+    }
+
+    // Receipts path: /receipts/{userId}/{productId}/{fileName}
+    match /receipts/{userId}/{productId}/{fileName} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && isValidDocType() && isUnderMaxSize();
+      allow delete: if isOwner(userId);
+    }
+
+    // Service attachments: /service_attachments/{userId}/{serviceId}/{fileName}
+    match /service_attachments/{userId}/{serviceId}/{fileName} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && isValidDocType() && isUnderMaxSize();
+      allow delete: if isOwner(userId);
+    }
+  }
+}
